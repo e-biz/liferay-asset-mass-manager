@@ -8,8 +8,6 @@
 
 <div id="container" class="row-fluid span10">
 	<portlet:actionURL var="formUrl" name='formAction'></portlet:actionURL>
-	<a href="<portlet:actionURL name="beamMe"></portlet:actionURL>">Beam
-		me!</a>
 	<aui:form action="<%=formUrl%>" name='form' method="post">
 		<div id="assets-column" class="span6">
 			<h3>Asset Type</h3>
