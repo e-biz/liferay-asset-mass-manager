@@ -6,21 +6,21 @@
 	integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
 	crossorigin="anonymous"></script>
 
-<div id="container" class="row-fluid span8">
+<div id="container" class="row-fluid span10">
 	<portlet:actionURL var="formUrl" name='formAction'></portlet:actionURL>
 	<a href="<portlet:actionURL name="beamMe"></portlet:actionURL>">Beam
-	me!</a>
+		me!</a>
 	<aui:form action="<%=formUrl%>" name='form' method="post">
-		<div id="assets-column" class="span7">
+		<div id="assets-column" class="span6">
 			<h3>Asset Type</h3>
 			<div class="list-assets">
-				<c:forEach var="i" begin="0" end="5">
+				<c:forEach var="asset" items="${assets}">
 					<div>
-						<h2>Asset type ${i}</h2>
+						<h2><liferay-ui:message key="${asset.key}"/> (${asset.value.size()})</h2>
 						<ul class="hidden">
-							<c:forEach var="j" begin="0" end="5">
-								<li><aui:input name="type-id" label="asset name"
-										type="checkbox" value="${i}" /></li>
+							<c:forEach var="ass" items="${asset.value}">
+								<li><aui:input id="${ass.key}" name="asset" label="${ass.value}"
+										type="checkbox" value="${ass.key}" /></li>
 							</c:forEach>
 						</ul>
 					</div>
@@ -32,9 +32,9 @@
 			<div id="tags-box" class="row-fluid span12">
 				<h3>Tags</h3>
 				<ul class="list-scroll">
-					<c:forEach var="i" begin="0" end="7">
-						<li><aui:input name="tag-id" label="tag name" type="checkbox"
-								value="${i}" /></li>
+					<c:forEach var="tag" items="${tags}">
+						<li><aui:input id="${tag.key}" name="tag-id" label="${tag.value}" type="checkbox"
+								value="${tag.key}" /></li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -42,15 +42,20 @@
 			<div id="categories-box" class="row-fluid span12">
 				<h3>Categories</h3>
 				<ul class="list-scroll">
-					<c:forEach var="k" begin="0" end="8">
-						<li><aui:input name="category-id" label="category name"
-								type="checkbox" value="${i}" /></li>
+					<c:forEach var="category" items="${categories}">
+						<li><aui:input id="${category.key}" name="category-id" label="${category.value}"
+								type="checkbox" value="${category.key}" /></li>
 					</c:forEach>
 				</ul>
 			</div>
 		</div>
+		
+		<aui:input name="hiddenAssetId" id="hiddenAssetId" type="hidden"/>
+		<aui:input name="hiddenTagId" id="hiddenTagId" type="hidden"/>
+		<aui:input name="hiddenCategoryId" id="hiddenCategoryId" type="hidden"/>
+		
 		<aui:button-row>
-			<aui:button type="submit" value="save" onClick="submitForm();" />
+			<aui:button id="submitFormAssets" type="submit" value="save"/>
 			<aui:button value="cancel" />
 		</aui:button-row>
 	</aui:form>
