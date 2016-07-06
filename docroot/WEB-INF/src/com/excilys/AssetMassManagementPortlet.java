@@ -24,7 +24,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.ProcessAction;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -47,7 +50,7 @@ public class AssetMassManagementPortlet extends MVCPortlet {
 	private static final String CALENDAR_EVENT_NAME = "asset-type-calendar-event";
 	private static final String WEB_CONTENT_NAME = "asset-type-web-content";
 	
-	public static Map<String, Map<Long,String>> assetsMap = new HashMap<String, Map<Long,String>>();
+	public static Map<String, Map<String,String>> assetsMap = new HashMap<String, Map<String,String>>();
 	Locale language;
 	long groupID;
 	
@@ -104,9 +107,9 @@ public class AssetMassManagementPortlet extends MVCPortlet {
 	 * @param className the type of wanted Asset entries
 	 * @return an ArrayList of all entries titles instance of <i>className</i>
 	 */
-	private Map<Long,String> getAssetEntriesTitles(AssetEntryQuery query, String className) {
+	private Map<String,String> getAssetEntriesTitles(AssetEntryQuery query, String className) {
 		List<AssetEntry> entries = null;
-		Map<Long,String> entriesTitles = null;
+		Map<String,String> entriesTitles = null;
 		//Construct query
 		query.setClassName(className);
 		try {
@@ -114,7 +117,7 @@ public class AssetMassManagementPortlet extends MVCPortlet {
 			entriesTitles = new HashMap<>(entries.size());
 			//Extract titles from asset entries
 			for (AssetEntry entry : entries){
-				entriesTitles.put(entry.getEntryId(),entry.getTitle(language));
+				entriesTitles.put(entry.getClassUuid(),entry.getTitle(language));
 			}
 		} catch (SystemException e) {
 			LOGGER.error("AssetMassManagementPortlet.getAssetEntriesTitles", e);
@@ -148,7 +151,7 @@ public class AssetMassManagementPortlet extends MVCPortlet {
 	 */
 	private void setDLFileByType(){
 		Map<Long, String> filesTypes = getDLFileEntryType();
-		Map<Long, String> filesNames=null;
+		Map<String, String> filesNames=null;
 		try {
 			List<DLFileEntry> files = DLFileEntryLocalServiceUtil.getDLFileEntries(0, DLFileEntryLocalServiceUtil.getDLFileEntriesCount());
 			//Create and put a list of files name for each type
@@ -156,7 +159,7 @@ public class AssetMassManagementPortlet extends MVCPortlet {
 				filesNames = new HashMap<>();
 				for (DLFileEntry entry : files){
 					if((entry.getFileEntryTypeId() == type.getKey()) && (entry.getGroupId() == groupID)){
-						filesNames.put(entry.getFileEntryId(),entry.getTitle());
+						filesNames.put(entry.getUuid(),entry.getTitle());
 					} 
 				}
 				assetsMap.put(type.getValue(), filesNames);
@@ -195,7 +198,6 @@ public class AssetMassManagementPortlet extends MVCPortlet {
 	private Map<Long,String> getTags(){
 		List<AssetTag> assetsTags = null;
 		Map<Long, String> tags = null;
-		
 		try {
 			assetsTags = AssetTagLocalServiceUtil.getTags();
 			tags = new HashMap<>(assetsTags.size());
@@ -207,6 +209,14 @@ public class AssetMassManagementPortlet extends MVCPortlet {
 			throw new RuntimeException(e);
 		}
 		return tags;
+	}
+	
+	@ProcessAction(name="formAction")
+	public void formAction(ActionRequest request, ActionResponse response){
+	//TODO	
+		
+		System.out.println("inFormAction");
+		
 	}
 	
 }
