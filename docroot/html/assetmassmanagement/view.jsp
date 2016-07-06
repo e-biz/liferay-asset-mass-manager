@@ -9,7 +9,7 @@
 <div id="container" class="row-fluid span10">
 	<div class="hidden" id="portlet-namespace" data-namespace="<portlet:namespace/>"></div>
 	<portlet:actionURL var="formUrl" name='formAction'></portlet:actionURL>
-	<aui:form action="<%=formUrl%>" name='form' method="post">
+	<aui:form id="form" action="<%=formUrl%>" name='form' method="post">
 		<div id="assets-column" class="span6">
 			<h3>Asset Type</h3>
 			<div class="list-assets">
