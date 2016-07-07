@@ -23,11 +23,6 @@
 		addToHidden("#assets-column", hiddenAssetId);
 		addToHidden("#tags-box", hiddenTagId);
 		addToHidden("#categories-box", hiddenCategoryId);
-
-		console.log($(hiddenAssetId).val());
-		console.log($(hiddenTagId).val());
-		console.log($(hiddenCategoryId).val());
-
 		$("#"+namespace+"form").trigger("submit");
 
 	})
